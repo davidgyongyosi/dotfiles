@@ -1,8 +1,11 @@
 # brew bundle --file ~/dotfiles/Brewfile
+# Works on macOS and Linux/WSL; casks are macOS-only.
 
-# Terminal
-cask "ghostty"
-cask "font-jetbrains-mono-nerd-font"
+# Terminal (on Windows: Windows Terminal + the font installed on the Windows side)
+if OS.mac?
+  cask "ghostty"
+  cask "font-jetbrains-mono-nerd-font"
+end
 
 # Multiplexer, editor, dotfile linking
 brew "tmux"

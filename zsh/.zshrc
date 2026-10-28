@@ -1,3 +1,6 @@
+# Homebrew on Linux/WSL. (On macOS, ~/.zprofile runs /opt/homebrew's shellenv.)
+[[ -x /home/linuxbrew/.linuxbrew/bin/brew ]] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
 PATH=$HOME/.dotnet/tools:$PATH
 export PATH="$HOME/.local/bin:$PATH"
 source "$HOME/.docker/init-zsh.sh" 2>/dev/null || true # Added by Docker Desktop
