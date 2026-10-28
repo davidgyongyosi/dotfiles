@@ -74,15 +74,19 @@
 | `Space g h s` / `Space g h r` | Stage / reset the hunk under cursor |
 | `Space g h p` | Preview the hunk |
 
-## Claude Code  (runs in tmux window 2)
+## Claude Code  (sidekick)
 | Keys | What |
 |---|---|
-| `Space a a` (visual) | Ask a **temporary** Claude in a side pane; it may edit. `/exit` closes it |
-| `Space a s` (visual) | Send selection + question to the long-running Claude in window 2 |
-| `Space a q` (visual) | Quick question: answer in a float, read-only (`q` closes) |
-| `prefix →` / `prefix ←` | Jump into the side pane for a follow-up / back to nvim |
-| `:w` / `:q` in a diff | Accept / reject Claude's proposed change |
-| `/ide` in Claude | Reconnect to Neovim if it started first or nvim restarted |
+| `Space a v` (visual) | Paste the selection into Claude, then type your question |
+| `Space a t` | Send "this": a `file:line` reference (or the selection) |
+| `Space a f` | Send the current file |
+| `Space a p` | Pick a ready-made prompt (explain, fix, review, diagnostics…) |
+| `Space a a` | Show / hide the Claude split |
+| `Ctrl-.` | Jump between your code and the Claude split |
+| `Space a d` | Detach (close) the Claude session |
+
+First send asks which Claude: the long-running one in window 2 (`[tmux]`) or a
+new one in a split. Claude edits files directly; Neovim reloads them.
 
 ## Buffers & windows
 | Keys | What |

@@ -32,7 +32,4 @@ first=$(q '#{window_index}')
 tmux rename-window -t "=$session:$first" nvim
 tmux send-keys -t "=$session:$first" nvim Enter
 tmux new-window -d -t "=$session:" -n ai -c "$dir"
-# Give Neovim a head start so its claudecode.nvim server is up when
-# `claude --ide` looks for an IDE to connect to.
-sleep 2
 tmux send-keys -t "=$session:ai" "$ai_cmd" Enter
