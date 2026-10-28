@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Run by tmux's session-created hook (see ~/.tmux.conf). Turns a fresh
+# session started inside ~/Projects into the dev layout:
+#
+#   1: nvim   2: ai   (the command in the @dev-ai-command tmux option)
+#
+# Sessions created elsewhere, and sessions tmux-resurrect is restoring,
+# are left alone.
+set -euo pipefail
+
+session="$1"
+ai_cmd=$(tmux show -gqv @dev-ai-command)
+ai_cmd=${ai_cmd:-claude}
+
+# tmux-resurrect creates a session and then adds its windows; give it a
+# moment so a restored session already has more than one window below.
+sleep 0.3
+
+q() { tmux display-message -p -t "=$session:" "$1"; }
+
+dir=$(q '#{pane_current_path}')
+[[ "$dir" == "$HOME/Projects/"* ]] || exit 0
+[[ $(q '#{session_windows}') == 1 && $(q '#{window_panes}') == 1 ]] || exit 0
+case $(q '#{pane_current_command}') in
+  zsh | bash | fish | sh) ;;
+  *) exit 0 ;;
+esac
+
+# Commands are typed into a shell rather than run directly, so quitting
+# nvim or the AI tool drops you back to a prompt instead of closing the window.
+first=$(q '#{window_index}')
+tmux rename-window -t "=$session:$first" nvim
+tmux send-keys -t "=$session:$first" nvim Enter
+tmux new-window -d -t "=$session:" -n ai -c "$dir"
+tmux send-keys -t "=$session:ai" "$ai_cmd" Enter

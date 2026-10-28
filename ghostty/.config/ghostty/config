@@ -1,0 +1,33 @@
+# Font — a Nerd Font is required for the icon glyphs used throughout the
+# Neovim config (diagnostics, file types, git signs, etc). The "Mono" variant
+# keeps icon glyphs on the monospace grid so terminal UI alignment stays correct.
+font-family = JetBrainsMono Nerd Font Mono
+font-size = 14
+
+# Transparency + blur — this is what makes Neovim's `bg = "none"` actually
+# show a transparent background instead of solid black/white.
+background-opacity = 0.75
+background-blur-radius = 10
+
+# A little breathing room around the edges.
+window-padding-x = 10
+window-padding-y = 10
+
+# Keep the window titlebar minimal.
+# macos-titlebar-style = hidden
+
+# Same palette as tmux (catppuccin plugin) and Neovim (catppuccin.nvim).
+theme = Catppuccin Mocha
+
+# Make Option send Alt/Meta so <M-…> bindings reach tmux and Neovim.
+# "left" keeps right-Option free for typing accented characters (é, ő, ű).
+macos-option-as-alt = left
+
+# tmux is the multiplexer, so skip the "are you sure?" prompt on quit.
+confirm-close-surface = false
+
+# Hide the mouse pointer while typing.
+mouse-hide-while-typing = true
+
+# Neovim drives the cursor shape per mode; don't let shell integration override it.
+shell-integration-features = no-cursor
