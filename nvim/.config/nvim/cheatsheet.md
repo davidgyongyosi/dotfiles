@@ -77,8 +77,10 @@
 ## Claude Code  (runs in tmux window 2)
 | Keys | What |
 |---|---|
-| `Space a a` (visual) | Ask Claude Code about the selection; it may edit |
+| `Space a a` (visual) | Ask a **temporary** Claude in a side pane; it may edit. `/exit` closes it |
+| `Space a s` (visual) | Send selection + question to the long-running Claude in window 2 |
 | `Space a q` (visual) | Quick question: answer in a float, read-only (`q` closes) |
+| `prefix →` / `prefix ←` | Jump into the side pane for a follow-up / back to nvim |
 | `:w` / `:q` in a diff | Accept / reject Claude's proposed change |
 | `/ide` in Claude | Reconnect to Neovim if it started first or nvim restarted |
 

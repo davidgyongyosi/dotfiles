@@ -1,12 +1,15 @@
--- Claude Code runs in tmux window "ai" (see tmux-dev-layout), not inside Neovim.
+-- Claude Code runs in tmux (see tmux-dev-layout), not inside Neovim.
 --
---   visual <leader>aa  Ask Claude Code: type a question, it's sent to the "ai"
---                      window with the selection as @file#L10-24. Edits come
---                      back as a diff here: :w accepts, :q rejects.
+--   visual <leader>aa  Ask: a temporary Claude Code in a side pane gets the
+--                      selection + your question; the pane closes when you
+--                      exit it. Window "ai" stays free for long discussions.
+--   visual <leader>as  Send the selection + question to the long-running
+--                      Claude Code in window "ai" instead.
 --   visual <leader>aq  Quick question: answer in a float, read-only.
 --
--- claudecode.nvim provides the IDE connection (diffs, selection, open files);
--- Claude Code connects to it when started with `claude --ide`.
+-- Edits from either Claude come back as a diff here: :w accepts, :q rejects.
+-- claudecode.nvim provides that IDE connection; Claude Code connects to it
+-- when started with `claude --ide`.
 
 -- Linewise range and text of the visual selection (call after leaving visual mode).
 local function selection()
@@ -31,7 +34,25 @@ local function with_question(prompt, fn)
   end)
 end
 
-local function send_to_claude(sel, question)
+local function ask_in_pane(sel, question)
+  if not vim.env.TMUX then
+    return vim.notify("Not inside tmux", vim.log.levels.ERROR)
+  end
+  -- The prompt goes through a temp file to avoid shell-quoting the code.
+  local prompt_file = vim.fn.tempname()
+  vim.fn.writefile(vim.split(("In @%s, lines %d-%d:\n\n```%s\n%s\n```\n\n%s"):format(
+    sel.file, sel.first, sel.last, sel.ft, sel.text, question), "\n"), prompt_file)
+  -- -d keeps focus in Neovim; the pane closes when this Claude exits.
+  vim.fn.system({
+    "tmux", "split-window", "-d", "-h", "-l", "40%", "-t", vim.env.TMUX_PANE, "-c", vim.fn.getcwd(),
+    ("claude --ide \"$(cat '%s')\"; rm -f '%s'"):format(prompt_file, prompt_file),
+  })
+  if vim.v.shell_error ~= 0 then
+    return vim.notify("Couldn't open the Claude pane", vim.log.levels.ERROR)
+  end
+end
+
+local function send_to_session(sel, question)
   if not vim.env.TMUX then
     return vim.notify("Not inside tmux", vim.log.levels.ERROR)
   end
@@ -83,9 +104,15 @@ return {
       { "<leader>a", "", desc = "+ai", mode = { "n", "x" } },
       {
         "<leader>aa",
-        function() with_question("Ask Claude Code: ", send_to_claude) end,
+        function() with_question("Ask Claude Code: ", ask_in_pane) end,
         mode = "x",
-        desc = "Ask Claude Code (can edit)",
+        desc = "Ask Claude Code (temporary pane)",
+      },
+      {
+        "<leader>as",
+        function() with_question("Send to Claude session: ", send_to_session) end,
+        mode = "x",
+        desc = "Send to Claude Session (window ai)",
       },
       {
         "<leader>aq",
