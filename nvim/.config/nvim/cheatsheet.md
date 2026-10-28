@@ -74,13 +74,6 @@
 | `Space g h s` / `Space g h r` | Stage / reset the hunk under cursor |
 | `Space g h p` | Preview the hunk |
 
-## Copilot completion
-| Keys | What |
-|---|---|
-| `Tab` (insert) | Accept the grey suggestion |
-| `Alt-]` / `Alt-[` | Next / previous suggestion |
-| `:LspCopilotSignIn` | Sign in again if the lualine Copilot icon turns red |
-
 ## Claude Code  (sidekick)
 | Keys | What |
 |---|---|
