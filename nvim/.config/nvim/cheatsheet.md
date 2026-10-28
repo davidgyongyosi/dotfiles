@@ -74,6 +74,14 @@
 | `Space g h s` / `Space g h r` | Stage / reset the hunk under cursor |
 | `Space g h p` | Preview the hunk |
 
+## Claude Code  (runs in tmux window 2)
+| Keys | What |
+|---|---|
+| `Space a a` (visual) | Ask Claude Code about the selection; it may edit |
+| `Space a q` (visual) | Quick question: answer in a float, read-only (`q` closes) |
+| `:w` / `:q` in a diff | Accept / reject Claude's proposed change |
+| `/ide` in Claude | Reconnect to Neovim if it started first or nvim restarted |
+
 ## Buffers & windows
 | Keys | What |
 |---|---|
