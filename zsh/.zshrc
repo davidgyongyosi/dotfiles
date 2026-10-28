@@ -25,22 +25,6 @@ fi
 [[ -s ~/.cache/ng-completion.zsh ]] && source ~/.cache/ng-completion.zsh
 
 
-# bun completions
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
-# nvm is loaded lazily on the first `nvm` call; node itself comes from Vite+.
-export NVM_DIR="$HOME/.nvm"
-nvm() {
-  unset -f nvm
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-  nvm "$@"
-}
-
 export PATH="$HOME/.cargo/bin:$PATH"
 
 # Vite+ bin (https://viteplus.dev)
