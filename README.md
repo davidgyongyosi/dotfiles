@@ -5,9 +5,10 @@ Built on macOS; runs on Windows through WSL2 ([see below](#windows-wsl2)).
 
 | Package | Links to | What |
 |---|---|---|
-| `ghostty` | `~/.config/ghostty/` | Terminal: theme, font, transparency, Option as Alt |
+| `ghostty` | `~/.config/ghostty/` | Terminal: theme, font, transparency, right Option as Alt |
 | `tmux` | `~/.tmux.conf` | Prefix `C-Space`, sessionx picker (`prefix o`), resurrect/continuum |
-| `bin` | `~/.local/bin/` | `tmux-dev-layout`: new sessions in `~/Projects` open as `1: nvim  2: ai` |
+| `rex` | `~/.config/rex/` | Trying out as a tmux alternative: same keys, `prefix o` runs `rex-dev`, Catppuccin theme file to import |
+| `bin` | `~/.local/bin/` | `rex-dev` (Rex project picker) and `tmux-dev-layout`: new sessions in `~/Projects` open as `1: nvim  2: ai` |
 | `nvim` | `~/.config/nvim/` | LazyVim + extras; `Space k` opens the [cheat sheet](nvim/.config/nvim/cheatsheet.md) |
 | `zsh` | `~/.zshrc` | fzf, zoxide, lazy nvm, cached completions |
 | `windows-terminal/` | (copy by hand) | Windows Terminal equivalent of the Ghostty config, for WSL2 |
@@ -21,7 +22,7 @@ Each folder is a [GNU Stow](https://www.gnu.org/software/stow/) package: its con
 git clone https://github.com/davidgyongyosi/dotfiles ~/dotfiles
 cd ~/dotfiles
 brew bundle            # tools from the Brewfile
-stow ghostty tmux bin nvim zsh
+stow ghostty tmux rex bin nvim zsh
 ```
 
 Then start `tmux` (plugins install on first launch) and `nvim` (LazyVim installs plugins and LSPs).

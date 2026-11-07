@@ -111,3 +111,25 @@ new one in a split. Claude edits files directly; Neovim reloads them.
 | `prefix z` | Zoom the current pane |
 | `z name` | cd to a frequent folder (zoxide) · `zi` interactive |
 | `Ctrl-R` / `Ctrl-T` | fzf: history / insert a file path |
+
+## Rex  (prefix = `Ctrl-Space`; on the Totem hold cmd on the other hand)
+| Keys | What |
+|---|---|
+| `Cmd-o` / `prefix o` | Project picker; a new project opens as nvim + ai |
+| `Cmd-k` / `prefix s` | All sessions |
+| `Cmd-u` / `Cmd-i` | Previous / next tab (`prefix p` / `n`, `prefix 1`…`9`) |
+| `Cmd-Shift-u` / `Cmd-Shift-i` | Previous / next session |
+| `Cmd-j` / `Cmd-l` | Previous / next pane (`prefix h/j/k/l` by direction) |
+| `Cmd-d` / `Cmd-Shift-d` | Split right / below (`prefix %` / `prefix -`) |
+| `Cmd-e` / `prefix z` | Zoom the current pane |
+| `Cmd-p` / `prefix Space` | Command palette: every action, by name |
+| `Cmd-b` / `prefix a` | Sidebar / activity (which agents need you) |
+| `prefix x` / `prefix X` | Close pane / close the other panes |
+| `prefix H/J/K/L` / `prefix e` | Resize pane / even out the splits |
+| `prefix g` / `b` / `m` | New floating pane / float this pane / minimize floats |
+| `prefix T` | Move this pane to its own tab |
+| `prefix d` / `prefix i` | Go to a directory / insert a path |
+| `prefix c` / `,` / `r` | New tab / rename tab / reload the config |
+| `prefix f` | Find in the terminal |
+| `prefix w` | Pane mode: `hjkl` focus, `HJKL` resize, arrows move, `p n z x e`; `Esc` leaves |
+| `prefix v` | Scroll mode: `k`/`j` prompts, `u`/`d` pages, `f n N` find; `Esc` leaves |

@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+# Rex counterpart of sessionx + tmux-dev-layout. Opens a project as its own
+# session with the dev layout:
+#
+#   1: nvim   2: ai   (the command in REX_DEV_AI_COMMAND, default claude)
+#
+# With a directory argument it opens that. Without one it picks with fzf from
+# the running sessions, ~/Projects and zoxide. A session already open under the
+# directory's name is reused. Bound to prefix o in ~/.config/rex/init.lua.
+set -euo pipefail
+
+ai_cmd=${REX_DEV_AI_COMMAND:-claude}
+
+# Commands are typed into a shell rather than run directly, so quitting nvim or
+# the AI tool drops you back to a prompt instead of closing the tab.
+type_cmd() {
+  rex send -s "$1" -b "$2" "$3"
+  rex send-key -s "$1" -b "$2" enter
+}
+
+# Needs Remote Control in Rex's settings. Without it the session still opens and
+# is in the sidebar; only the switch to it is skipped.
+show() {
+  local client
+  client=$(rex client ls --json |
+    jq -r 'first(.clients[] | select(.info and .session_ids) | .client_id) // empty')
+  [[ -z "$client" ]] || rex -C "$client" do session.select session_id="$1" >/dev/null 2>&1 || true
+}
+
+session_named() {
+  rex ls --json | jq -r --arg l "$1" 'first(.sessions[] | select(.label == $l) | .session_id) // empty'
+}
+
+open_dir() {
+  local dir label sid created block
+  dir=$(cd "$1" && pwd)
+  label=$(basename "$dir")
+
+  sid=$(session_named "$label")
+  if [[ -z "$sid" ]]; then
+    created=$(rex new "$label" -c "$dir" --window nvim --json)
+    sid=$(jq -er '.session_id' <<<"$created")
+    block=$(jq -er '.initial_windows[0].block_ids[0]' <<<"$created")
+    type_cmd "$sid" "$block" nvim
+    block=$(rex window new -s "$sid" ai -c "$dir" --focus=false --json | jq -er '.block_ids[0]')
+    type_cmd "$sid" "$block" "$ai_cmd"
+  fi
+  show "$sid"
+}
+
+if [[ $# -gt 0 ]]; then
+  open_dir "$1"
+  exit 0
+fi
+
+# One "target<TAB>name" line per choice; sessions first, then directories
+# that don't have a session yet.
+choices() {
+  local sessions labels
+  sessions=$(rex ls --json)
+  labels=$(jq -r '.sessions[].label' <<<"$sessions")
+  jq -r '.sessions[] | "\(.session_id)\t● \(.label)"' <<<"$sessions"
+  {
+    find "$HOME/Projects" -mindepth 1 -maxdepth 1 -type d
+    zoxide query -l 2>/dev/null || true
+  } | awk '!seen[$0]++' | while IFS= read -r dir; do
+    grep -Fxq -- "$(basename "$dir")" <<<"$labels" ||
+      printf '%s\t  %s\n' "$dir" "${dir/#$HOME/~}"
+  done
+}
+
+# Cancelling is not a failure: Rex keeps a pane open after a quick failure.
+pick=$(choices | fzf --delimiter='\t' --with-nth=2 --prompt='project> ') || exit 0
+target=${pick%%$'\t'*}
+
+case "$target" in
+  session:*) show "$target" ;;
+  *) open_dir "$target" ;;
+esac
