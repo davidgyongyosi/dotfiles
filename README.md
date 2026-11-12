@@ -7,7 +7,7 @@ Built on macOS; runs on Windows through WSL2 ([see below](#windows-wsl2)).
 |---|---|---|
 | `ghostty` | `~/.config/ghostty/` | Terminal: theme, font, transparency, right Option as Alt |
 | `tmux` | `~/.tmux.conf` | Prefix `C-Space`, sessionx picker (`prefix o`), resurrect/continuum |
-| `rex` | `~/.config/rex/` | Trying out as a tmux alternative: same keys, `prefix o` runs `rex-dev`, Catppuccin theme file to import |
+| `rex` | `~/.config/rex/` | Trying out as a tmux alternative: Cmd keys plus a tmux-style layout mode on `Ctrl-Space`, `Cmd-o` runs `rex-dev`, Catppuccin theme file to import |
 | `bin` | `~/.local/bin/` | `rex-dev` (Rex project picker) and `tmux-dev-layout`: new sessions in `~/Projects` open as `1: nvim  2: ai` |
 | `nvim` | `~/.config/nvim/` | LazyVim + extras; `Space k` opens the [cheat sheet](nvim/.config/nvim/cheatsheet.md) |
 | `zsh` | `~/.zshrc` | fzf, zoxide, lazy nvm, cached completions |
@@ -41,7 +41,8 @@ only the terminal and the font live on the Windows side.
    winget install equalsraf.win32yank              # clipboard for Neovim outside tmux
    ```
    Then merge [`windows-terminal/settings.jsonc`](windows-terminal/settings.jsonc) into
-   Windows Terminal's settings (Catppuccin Mocha, font, transparency, Ctrl+V freed for Neovim).
+   Windows Terminal's settings (Catppuccin Mocha, font, transparency, WSL Ubuntu in `~` by default,
+   no quit prompt, Ctrl+V and the Alt keys freed for Neovim and tmux).
 2. **Inside WSL** (Ubuntu):
    ```sh
    sudo apt update && sudo apt install -y zsh git build-essential

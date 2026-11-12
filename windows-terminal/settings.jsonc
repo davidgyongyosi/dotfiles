@@ -2,6 +2,14 @@
 // Windows Terminal lives on the Windows side). Merge these keys into
 // Settings → "Open JSON file". Requires JetBrainsMono Nerd Font installed on Windows.
 {
+  // Open WSL Ubuntu by default. Windows Terminal derives this id from the
+  // distro name "Ubuntu"; if yours is named differently, pick it under
+  // Settings → Startup → Default profile instead.
+  "defaultProfile": "{2c4de342-38b7-51cf-b940-2309a097f518}",
+
+  // tmux is the multiplexer, so skip the "are you sure?" prompt on quit.
+  "confirmCloseAllTabs": false,
+
   "profiles": {
     "defaults": {
       "colorScheme": "Catppuccin Mocha",
@@ -10,12 +18,33 @@
       "opacity": 75,
       "useAcrylic": true,
       "padding": "10"
-    }
+    },
+    "list": [
+      {
+        // Start in the Linux home, where ~/Projects lives, not in C:\Users.
+        "guid": "{2c4de342-38b7-51cf-b940-2309a097f518}",
+        "commandline": "wsl.exe -d Ubuntu --cd ~"
+      }
+    ]
   },
 
-  // Free Ctrl+V for Neovim's visual block mode; paste with Ctrl+Shift+V instead.
   "keybindings": [
-    { "id": null, "keys": "ctrl+v" }
+    // Free Ctrl+V for Neovim's visual block mode; paste with Ctrl+Shift+V instead.
+    { "id": null, "keys": "ctrl+v" },
+
+    // Windows Terminal's own panes; tmux does this, and Neovim and tmux get the
+    // Alt keys instead. Right Alt (AltGr) still types Hungarian symbols.
+    { "id": null, "keys": "alt+shift+minus" },
+    { "id": null, "keys": "alt+shift+plus" },
+    { "id": null, "keys": "alt+shift+d" },
+    { "id": null, "keys": "alt+left" },
+    { "id": null, "keys": "alt+right" },
+    { "id": null, "keys": "alt+up" },
+    { "id": null, "keys": "alt+down" },
+    { "id": null, "keys": "alt+shift+left" },
+    { "id": null, "keys": "alt+shift+right" },
+    { "id": null, "keys": "alt+shift+up" },
+    { "id": null, "keys": "alt+shift+down" }
   ],
 
   "schemes": [
